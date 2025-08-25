@@ -15,6 +15,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 1. **Real-Time Transaction Risk Scoring Engine**
 - **Problem Type**: Classification with Regression scoring
 - **Problem Description**: Develop a system that assigns risk scores (0-100) to cryptocurrency transactions in real-time, integrating traditional AML indicators with blockchain-specific risk factors including wallet clustering, transaction graph analysis, and counterparty reputation scoring.
+- **Difficulty Level**: High - requires sub-second processing of complex multi-dimensional data
 - **Data Landscape**: Transaction metadata, wallet addresses, transaction amounts, temporal patterns, counterparty databases, sanctions lists, blockchain graph data, gas fees, transaction frequency patterns
 - **Solution Brainstorm**:
   - Descriptive analytics: Transaction volume analysis, address clustering statistics, temporal pattern identification
@@ -29,6 +30,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 2. **Cryptocurrency Mixing Service Detection System**
 - **Problem Type**: Anomaly Detection and Classification
 - **Problem Description**: Identify transactions that have passed through mixing services (Tornado Cash alternatives, privacy coins, tumblers) to detect potential money laundering attempts and ensure compliance with sanctions regulations.
+- **Difficulty Level**: Very High - adversarial environment with evolving evasion techniques
 - **Data Landscape**: Transaction flow data, wallet clustering information, timing analysis data, mixing service databases, privacy coin transaction patterns, DeFi protocol interactions
 - **Solution Brainstorm**:
   - Descriptive analytics: Mixed transaction volume trends, temporal clustering of suspicious activities
@@ -43,6 +45,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 3. **Cross-Chain Transaction Tracking and Analysis**
 - **Problem Type**: Graph Analysis and Link Prediction
 - **Problem Description**: Track and analyze cryptocurrency transactions across multiple blockchain networks to identify cross-chain money laundering patterns and maintain audit trails for regulatory reporting.
+- **Difficulty Level**: Very High - requires integration of multiple blockchain protocols and data sources
 - **Data Landscape**: Multi-blockchain transaction data, cross-chain bridge protocols, wrapped token transactions, atomic swap data, DEX trading patterns, layer-2 solution transactions
 - **Solution Brainstorm**:
   - Descriptive analytics: Cross-chain transaction volume analysis, bridge usage statistics, temporal flow patterns
@@ -57,6 +60,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 4. **DeFi Protocol Risk Assessment Framework**
 - **Problem Type**: Multi-class Classification and Risk Modeling
 - **Problem Description**: Assess and categorize risk levels of DeFi protocols, smart contracts, and yield farming strategies to help banks evaluate customer interactions with decentralized finance platforms.
+- **Difficulty Level**: High - rapidly evolving DeFi landscape with complex protocol interactions
 - **Data Landscape**: Smart contract code, protocol TVL data, governance token metrics, yield rates, exploit history, audit reports, protocol usage patterns, liquidity pool data
 - **Solution Brainstorm**:
   - Descriptive analytics: Protocol usage statistics, risk distribution analysis, exploit trend analysis
@@ -71,6 +75,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 5. **Suspicious Address Clustering and Entity Resolution**
 - **Problem Type**: Unsupervised Clustering and Graph Mining
 - **Problem Description**: Group cryptocurrency addresses belonging to the same entity and identify clusters associated with illicit activities using transaction patterns, timing analysis, and behavioral fingerprinting.
+- **Difficulty Level**: High - privacy-preserving techniques make clustering increasingly difficult
 - **Data Landscape**: Transaction graphs, address interaction patterns, timing data, gas price patterns, UTXO analysis data, exchange deposit/withdrawal patterns, wallet software fingerprints
 - **Solution Brainstorm**:
   - Descriptive analytics: Address relationship mapping, transaction pattern visualization
@@ -85,6 +90,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 6. **Regulatory Compliance Reporting Automation**
 - **Problem Type**: Natural Language Processing and Automated Reporting
 - **Problem Description**: Automatically generate regulatory reports (SARs, CTRs) from transaction monitoring alerts, ensuring compliance with different jurisdictional requirements and reducing manual review overhead.
+- **Difficulty Level**: Medium-High - requires understanding of complex regulatory language and requirements
 - **Data Landscape**: Alert data, investigation notes, regulatory templates, jurisdiction-specific requirements, historical report examples, compliance officer feedback
 - **Solution Brainstorm**:
   - Descriptive analytics: Alert volume trends, report generation statistics, compliance metrics
@@ -99,6 +105,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 7. **Customer Crypto Activity Behavioral Profiling**
 - **Problem Type**: Behavioral Analytics and Anomaly Detection
 - **Problem Description**: Create dynamic behavioral profiles for bank customers engaging in cryptocurrency activities to detect deviations that may indicate money laundering, fraud, or other illicit activities.
+- **Difficulty Level**: Medium-High - balancing privacy concerns with effective monitoring
 - **Data Landscape**: Customer transaction histories, account patterns, demographic data, crypto exchange interactions, timing patterns, transaction amounts, frequency data
 - **Solution Brainstorm**:
   - Descriptive analytics: Customer activity baselines, behavioral trend analysis
@@ -113,6 +120,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 8. **Cryptocurrency Exchange and VASP Risk Assessment**
 - **Problem Type**: Multi-criteria Decision Analysis and Risk Scoring
 - **Problem Description**: Evaluate and score the risk levels of cryptocurrency exchanges and Virtual Asset Service Providers (VASPs) that bank customers interact with, considering regulatory compliance, security measures, and reputation factors.
+- **Difficulty Level**: Medium - requires integration of multiple data sources and expert knowledge
 - **Data Landscape**: Exchange registration data, security audit reports, regulatory compliance status, hack history, trading volumes, customer reviews, regulatory actions, geographic locations
 - **Solution Brainstorm**:
   - Descriptive analytics: Exchange risk distribution, compliance status analysis, security incident trends
@@ -127,6 +135,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 9. **Privacy-Preserving Transaction Monitoring**
 - **Problem Type**: Federated Learning and Privacy-Preserving Analytics
 - **Problem Description**: Develop methods to monitor cryptocurrency transactions and share threat intelligence between banks while preserving customer privacy and maintaining competitive advantages.
+- **Difficulty Level**: Very High - cutting-edge privacy technology with regulatory complexity
 - **Data Landscape**: Encrypted transaction patterns, anonymized behavioral data, federated model parameters, differential privacy noise, secure multi-party computation inputs
 - **Solution Brainstorm**:
   - Descriptive analytics: Privacy-preserved statistics sharing, anonymized trend analysis
@@ -141,6 +150,7 @@ The domain demands integration of traditional AML systems with blockchain analyt
 ### 10. **Automated Blockchain Forensics and Investigation Support**
 - **Problem Type**: Graph Analysis and Evidence Chain Reconstruction
 - **Problem Description**: Build automated tools to support blockchain forensic investigations by reconstructing transaction flows, identifying key actors, and providing evidence chains for law enforcement and regulatory proceedings.
+- **Difficulty Level**: Very High - requires deep blockchain expertise and legal evidence standards
 - **Data Landscape**: Complete blockchain transaction data, wallet metadata, exchange records, timing data, IP address correlations, social media data, court case precedents, forensic evidence standards
 - **Solution Brainstorm**:
   - Descriptive analytics: Transaction flow visualization, actor relationship mapping, evidence chain documentation
