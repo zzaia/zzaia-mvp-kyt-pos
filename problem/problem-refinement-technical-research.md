@@ -292,6 +292,146 @@ The domain demands integration of traditional AML systems with blockchain analyt
   - Real-time processing: Live investigation support, real-time evidence correlation
   - Hybrid approach: Automated discovery with expert investigation guidance and legal validation
 
+### 11. **Simple Binary Classification: Cryptocurrency Transaction Risk Level**
+- **Problem Type**: Binary Classification
+- **Problem Description**: Classify cryptocurrency transactions as "Low Risk" or "High Risk" using basic transaction features like amount, frequency, and timing patterns. Simple binary classification suitable for entry-level machine learning implementation.
+- **Difficulty Level**: Easy - Basic binary classification with clear features and balanced evaluation
+- **Data Landscape**: Transaction amounts, timestamps, frequency counts, sender/receiver patterns, basic transaction metadata
+- **Recommended Datasets**:
+  - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin transactions with binary illicit/licit labels
+    - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
+  - **Ethereum Fraud Detection** (Kaggle, Score: 88/100) - Ethereum transactions with fraud/normal labels
+    - URL: https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset
+    - Features: 41 transaction features including avg_min_between_sent_tnx, ERC20_avg_time_between_tnx, unique_received_from_addresses, gas_price, contract_interaction_flags
+    - Labels: Yes - Binary classification (fraud/normal), highly imbalanced dataset
+  - **IBM AML Dataset** (Kaggle, Score: 92/100) - Synthetic transactions with binary risk indicators
+    - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
+- **Solution Brainstorm**:
+  - Descriptive analytics: Feature distribution analysis, class balance examination, correlation analysis
+  - Diagnostic analytics: Feature importance analysis, classification error investigation
+  - Predictive modeling: Logistic Regression, Decision Trees, Random Forest, Naive Bayes
+  - Prescriptive analytics: Automated risk flagging, threshold optimization, alert generation
+  - ML algorithms: Scikit-learn classifiers, Simple neural networks, Ensemble methods
+  - Advanced techniques: Feature selection, Cross-validation, Hyperparameter tuning
+  - Real-time processing: Online classification, Batch prediction, Model serving APIs
+  - Hybrid approach: Rule-based pre-filtering with ML classification refinement
+
+### 12. **Linear Regression: Cryptocurrency Transaction Amount Prediction**
+- **Problem Type**: Regression
+- **Problem Description**: Predict cryptocurrency transaction amounts based on historical patterns, user behavior, and temporal features. Simple regression problem using continuous target variables for transaction amount forecasting.
+- **Difficulty Level**: Easy - Basic linear regression with clear numerical targets and interpretable features
+- **Data Landscape**: Historical transaction amounts, user activity patterns, time-based features, frequency metrics, account balances
+- **Recommended Datasets**:
+  - **IBM AML Dataset** (Kaggle, Score: 92/100) - Transaction amounts for regression modeling
+    - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
+  - **BitcoinHeist Dataset** (UCI, Score: 85/100) - Bitcoin transaction amounts and patterns
+    - URL: https://archive.ics.uci.edu/ml/datasets/BitcoinHeistRansomwareAddressDataset
+    - Features: Address, year, day, length, weight, count, looped, neighbors, income, labels (ransomware families)
+    - Labels: Yes - Multi-class classification with ransomware family types (29 different families + white addresses)
+  - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin transaction features for amount prediction
+    - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
+- **Solution Brainstorm**:
+  - Descriptive analytics: Amount distribution analysis, correlation analysis, trend identification
+  - Diagnostic analytics: Residual analysis, feature importance evaluation, prediction error investigation
+  - Predictive modeling: Linear Regression, Polynomial Regression, Ridge/Lasso Regression
+  - Prescriptive analytics: Amount threshold setting, transaction planning, resource allocation
+  - ML algorithms: Scikit-learn regression models, Simple neural networks, Ensemble regressors
+  - Advanced techniques: Feature engineering, Regularization, Cross-validation
+  - Real-time processing: Online prediction, Streaming regression, Model updating
+  - Hybrid approach: Statistical models with machine learning enhancement
+
+### 13. **K-Means Clustering: Cryptocurrency User Behavioral Segmentation**
+- **Problem Type**: Clustering
+- **Problem Description**: Group cryptocurrency users into distinct behavioral segments based on transaction patterns, frequency, amounts, and timing using unsupervised K-means clustering for customer profiling and risk assessment.
+- **Difficulty Level**: Easy - Basic K-means clustering with clear feature interpretation and visualization
+- **Data Landscape**: User transaction frequency, average amounts, time patterns, account activity metrics, transaction types
+- **Recommended Datasets**:
+  - **IBM AML Dataset** (Kaggle, Score: 92/100) - User behavioral patterns for clustering
+    - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
+  - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin user transaction patterns
+    - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
+  - **BitcoinHeist Dataset** (UCI, Score: 85/100) - Bitcoin address behavioral clustering
+    - URL: https://archive.ics.uci.edu/ml/datasets/BitcoinHeistRansomwareAddressDataset
+    - Features: Address, year, day, length, weight, count, looped, neighbors, income, labels (ransomware families)
+    - Labels: Yes - Multi-class classification with ransomware family types (29 different families + white addresses)
+- **Solution Brainstorm**:
+  - Descriptive analytics: Cluster profiling, Feature distribution analysis, Segment characteristics
+  - Diagnostic analytics: Cluster validation, Silhouette analysis, Within-cluster variance examination
+  - Predictive modeling: K-means, K-medoids, Hierarchical clustering, DBSCAN
+  - Prescriptive analytics: Segment-based recommendations, Risk profiling, Customer targeting
+  - ML algorithms: Scikit-learn clustering, Simple neural networks, Gaussian Mixture Models
+  - Advanced techniques: Feature scaling, Dimensionality reduction (PCA), Optimal k selection
+  - Real-time processing: Online clustering, Incremental updates, Stream clustering
+  - Hybrid approach: Unsupervised clustering with supervised validation
+
+### 14. **Multi-class Classification: Cryptocurrency Network Type Identification**
+- **Problem Type**: Multi-class Classification
+- **Problem Description**: Classify cryptocurrency transactions by network type (Bitcoin, Ethereum, Litecoin, etc.) based on transaction features and patterns. Simple multi-class classification with clear categorical targets.
+- **Difficulty Level**: Easy - Basic multi-class classification with distinct network characteristics and interpretable features
+- **Data Landscape**: Transaction features, network-specific patterns, block characteristics, fee structures, address formats
+- **Recommended Datasets**:
+  - **IBM AML Dataset** (Kaggle, Score: 92/100) - Multi-network transaction examples
+    - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
+  - **Ethereum Fraud Detection** (Kaggle, Score: 88/100) - Ethereum-specific transaction features
+    - URL: https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset
+    - Features: 41 transaction features including avg_min_between_sent_tnx, ERC20_avg_time_between_tnx, unique_received_from_addresses, gas_price, contract_interaction_flags
+    - Labels: Yes - Binary classification (fraud/normal), highly imbalanced dataset
+  - **BitcoinHeist Dataset** (UCI, Score: 85/100) - Bitcoin network transaction patterns
+    - URL: https://archive.ics.uci.edu/ml/datasets/BitcoinHeistRansomwareAddressDataset
+    - Features: Address, year, day, length, weight, count, looped, neighbors, income, labels (ransomware families)
+    - Labels: Yes - Multi-class classification with ransomware family types (29 different families + white addresses)
+- **Solution Brainstorm**:
+  - Descriptive analytics: Network feature analysis, Class distribution examination, Feature correlation analysis
+  - Diagnostic analytics: Classification accuracy analysis, Confusion matrix interpretation, Feature importance evaluation
+  - Predictive modeling: Multinomial Logistic Regression, Decision Trees, Random Forest, SVM
+  - Prescriptive analytics: Network-specific routing, Automated classification, Protocol selection
+  - ML algorithms: Scikit-learn multi-class classifiers, One-vs-Rest, One-vs-One approaches
+  - Advanced techniques: Feature engineering, Class balancing, Cross-validation
+  - Real-time processing: Online multi-class prediction, Streaming classification, Model serving
+  - Hybrid approach: Rule-based network identification with ML validation
+
+### 15. **Anomaly Detection: Unusual Transaction Pattern Clustering**
+- **Problem Type**: Clustering (Anomaly Detection)
+- **Problem Description**: Use clustering algorithms to identify unusual cryptocurrency transaction patterns that deviate from normal behavior, detecting potential fraudulent or suspicious activities through unsupervised anomaly detection.
+- **Difficulty Level**: Easy - Basic anomaly detection using distance-based clustering with clear outlier identification
+- **Data Landscape**: Transaction patterns, user behavior metrics, temporal features, amount distributions, frequency patterns
+- **Recommended Datasets**:
+  - **SAML-D Dataset** (Kaggle, Score: 82/100) - Transaction patterns with anomaly indicators
+    - URL: https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml
+    - Features: Transaction amount, sender/receiver info, transaction type, high-risk geography flags, SAR flags, typology labels
+    - Labels: Yes - Multi-class with 28 different money laundering typology labels and SAR indicators
+  - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin patterns with known illicit behavior
+    - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
+  - **IBM AML Dataset** (Kaggle, Score: 92/100) - Synthetic patterns with built-in anomalies
+    - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
+- **Solution Brainstorm**:
+  - Descriptive analytics: Pattern distribution analysis, Outlier visualization, Anomaly characterization
+  - Diagnostic analytics: Cluster quality assessment, Anomaly validation, False positive analysis
+  - Predictive modeling: Isolation Forest, One-Class SVM, DBSCAN, Local Outlier Factor
+  - Prescriptive analytics: Automated anomaly flagging, Investigation prioritization, Risk scoring
+  - ML algorithms: Scikit-learn anomaly detection, Distance-based methods, Density-based clustering
+  - Advanced techniques: Feature normalization, Dimensionality reduction, Ensemble anomaly detection
+  - Real-time processing: Online anomaly detection, Streaming outlier identification, Live monitoring
+  - Hybrid approach: Unsupervised anomaly detection with supervised validation
+
 ---
 
 ## Research Methodology
