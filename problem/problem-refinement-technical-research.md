@@ -21,12 +21,15 @@ The domain demands integration of traditional AML systems with blockchain analyt
   - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin transaction graph with 203,769 nodes, labeled illicit/licit patterns
     - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
     - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
   - **IBM AML Dataset** (Kaggle, Score: 92/100) - Comprehensive synthetic AML data with risk scoring features
     - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
     - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
   - **BitcoinHeist Dataset** (UCI, Score: 85/100) - 2.9M Bitcoin transactions with ransomware patterns for risk assessment
     - URL: https://archive.ics.uci.edu/ml/datasets/BitcoinHeistRansomwareAddressDataset
     - Features: Address, year, day, length, weight, count, looped, neighbors, income, labels (ransomware families)
+    - Labels: Yes - Multi-class classification with ransomware family types (29 different families + white addresses)
 - **Solution Brainstorm**:
   - Descriptive analytics: Transaction volume analysis, address clustering statistics, temporal pattern identification
   - Diagnostic analytics: Root cause analysis of high-risk score assignments, false positive investigation
@@ -45,12 +48,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin graph structure ideal for identifying mixing patterns
     - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
   - **SAML-D AML Dataset** (Kaggle, Score: 82/100) - 28 money laundering typologies including mixing services
     - URL: https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml
     - Features: Transaction amount, sender/receiver info, transaction type, high-risk geography flags, SAR flags, typology labels
+    - Labels: Yes - Multi-class with 28 different money laundering typology labels and SAR indicators
   - **Cryptocurrency Scam Dataset** (Kaggle, Score: 72/100) - Verified scam URLs and mixing service patterns
     - URL: https://www.kaggle.com/datasets/zongaobian/cryptocurrency-scam-dataset
     - Features: URL, scam type, category, subcategory, reporter, date, status verification, blockchain addresses
+    - Labels: Yes - Multi-class classification by scam type (phishing, fake exchange, Ponzi, etc.)
 - **Solution Brainstorm**:
   - Descriptive analytics: Mixed transaction volume trends, temporal clustering of suspicious activities
   - Diagnostic analytics: Pattern analysis of mixing service usage, investigation of evasion techniques
@@ -70,11 +77,15 @@ The domain demands integration of traditional AML systems with blockchain analyt
   - **Ethereum Fraud Detection** (Kaggle, Score: 88/100) - 41 Ethereum features including ERC20 and contract interactions
     - URL: https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset
     - Features: 41 transaction features including avg_min_between_sent_tnx, ERC20_avg_time_between_tnx, unique_received_from_addresses, gas_price, contract_interaction_flags
+    - Labels: Yes - Binary classification (fraud/normal), highly imbalanced dataset
   - **DeFi Dataset from DefiLlama** (Kaggle, Score: 78/100) - Protocol TVL and cross-chain activity data
     - URL: https://www.kaggle.com/datasets/sudalairajkumar/defi-dataset-from-defillama
     - Features: protocol_name, chain, TVL, change_1d, change_7d, change_1m, category, date, mcap, revenue, treasury
+    - Labels: No - Unlabeled time series data for unsupervised analysis and risk modeling
   - **IBM AML Dataset** (Kaggle, Score: 92/100) - Multi-institution tracking suitable for cross-chain analysis
     - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
 - **Solution Brainstorm**:
   - Descriptive analytics: Cross-chain transaction volume analysis, bridge usage statistics, temporal flow patterns
   - Diagnostic analytics: Investigation of cross-chain laundering patterns, bridge exploit analysis
@@ -93,11 +104,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **DeFi Dataset from DefiLlama** (Kaggle, Score: 78/100) - Comprehensive protocol TVL and performance data
     - URL: https://www.kaggle.com/datasets/sudalairajkumar/defi-dataset-from-defillama
+    - Features: protocol_name, chain, TVL, change_1d, change_7d, change_1m, category, date, mcap, revenue, treasury
+    - Labels: No - Unlabeled time series data for unsupervised analysis and risk modeling
   - **Smart Contract Vulnerabilities** (Kaggle, Score: 75/100) - Vulnerability patterns and security analysis
     - URL: https://www.kaggle.com/datasets/tranduongminhdai/smart-contract-vulnerability-datset
     - Features: contract_address, source_code, vulnerability_type, severity, function_name, line_number, vulnerability_description
+    - Labels: Yes - Multi-class classification by vulnerability type (reentrancy, overflow, etc.)
   - **Ethereum Fraud Detection** (Kaggle, Score: 88/100) - Smart contract interaction patterns and risk factors
     - URL: https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset
+    - Features: 41 transaction features including avg_min_between_sent_tnx, ERC20_avg_time_between_tnx, unique_received_from_addresses, gas_price, contract_interaction_flags
+    - Labels: Yes - Binary classification (fraud/normal), highly imbalanced dataset
 - **Solution Brainstorm**:
   - Descriptive analytics: Protocol usage statistics, risk distribution analysis, exploit trend analysis
   - Diagnostic analytics: Smart contract vulnerability analysis, protocol failure investigation
@@ -116,10 +132,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin transaction graph with 234,355 edges for clustering analysis
     - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
   - **BitcoinHeist Dataset** (UCI, Score: 85/100) - 2.9M Bitcoin addresses with temporal patterns for entity resolution
     - URL: https://archive.ics.uci.edu/ml/datasets/BitcoinHeistRansomwareAddressDataset
+    - Features: Address, year, day, length, weight, count, looped, neighbors, income, labels (ransomware families)
+    - Labels: Yes - Multi-class classification with ransomware family types (29 different families + white addresses)
   - **Ethereum Fraud Detection** (Kaggle, Score: 88/100) - Ethereum address patterns and interaction features
     - URL: https://www.kaggle.com/datasets/vagifa/ethereum-frauddetection-dataset
+    - Features: 41 transaction features including avg_min_between_sent_tnx, ERC20_avg_time_between_tnx, unique_received_from_addresses, gas_price, contract_interaction_flags
+    - Labels: Yes - Binary classification (fraud/normal), highly imbalanced dataset
 - **Solution Brainstorm**:
   - Descriptive analytics: Address relationship mapping, transaction pattern visualization
   - Diagnostic analytics: Cluster formation analysis, entity behavior profiling
@@ -139,10 +161,15 @@ The domain demands integration of traditional AML systems with blockchain analyt
   - **Financial Fraud Dataset** (Hugging Face, Score: 68/100) - SEC filings with MD&A analysis for regulatory text patterns
     - URL: https://huggingface.co/datasets/amitkedia/Financial-Fraud-Dataset
     - Features: company_name, year, MD&A_text, financial_statements, fraud_label, SEC_filing_type, text_features
+    - Labels: Yes - Binary classification (fraudulent/legitimate) based on SEC enforcement actions
   - **IBM AML Dataset** (Kaggle, Score: 92/100) - Structured AML scenarios suitable for automated report generation
     - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
   - **SAML-D Dataset** (Kaggle, Score: 82/100) - 28 typologies with structured pattern descriptions for template creation
     - URL: https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml
+    - Features: Transaction amount, sender/receiver info, transaction type, high-risk geography flags, SAR flags, typology labels
+    - Labels: Yes - Multi-class with 28 different money laundering typology labels and SAR indicators
 - **Solution Brainstorm**:
   - Descriptive analytics: Alert volume trends, report generation statistics, compliance metrics
   - Diagnostic analytics: Report quality analysis, false positive investigation
@@ -161,11 +188,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **IBM AML Dataset** (Kaggle, Score: 92/100) - Comprehensive customer behavioral patterns across institutions
     - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
   - **CryptoData Market Dataset** (Hugging Face, Score: 65/100) - Market behavior patterns for customer profiling
     - URL: https://huggingface.co/datasets/sebdg/crypto_data
     - Features: OHLCV data (open, high, low, close, volume), RSI, SMA, EMA, MACD, Bollinger Bands, trading volume patterns
+    - Labels: No - Unlabeled market data for behavioral pattern analysis and feature engineering
   - **SAML-D Dataset** (Kaggle, Score: 82/100) - High-risk customer behavioral typologies and patterns
     - URL: https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml
+    - Features: Transaction amount, sender/receiver info, transaction type, high-risk geography flags, SAR flags, typology labels
+    - Labels: Yes - Multi-class with 28 different money laundering typology labels and SAR indicators
 - **Solution Brainstorm**:
   - Descriptive analytics: Customer activity baselines, behavioral trend analysis
   - Diagnostic analytics: Deviation root cause analysis, customer risk factor investigation
@@ -184,10 +216,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **Cryptocurrency Scam Dataset** (Kaggle, Score: 72/100) - Verified scam exchanges and phishing sites for risk assessment
     - URL: https://www.kaggle.com/datasets/zongaobian/cryptocurrency-scam-dataset
+    - Features: URL, scam type, category, subcategory, reporter, date, status verification, blockchain addresses
+    - Labels: Yes - Multi-class classification by scam type (phishing, fake exchange, Ponzi, etc.)
   - **DeFi Dataset from DefiLlama** (Kaggle, Score: 78/100) - Protocol performance and security metrics
     - URL: https://www.kaggle.com/datasets/sudalairajkumar/defi-dataset-from-defillama
+    - Features: protocol_name, chain, TVL, change_1d, change_7d, change_1m, category, date, mcap, revenue, treasury
+    - Labels: No - Unlabeled time series data for unsupervised analysis and risk modeling
   - **Smart Contract Vulnerabilities** (Kaggle, Score: 75/100) - Security audit patterns for VASP assessment
     - URL: https://www.kaggle.com/datasets/tranduongminhdai/smart-contract-vulnerability-datset
+    - Features: contract_address, source_code, vulnerability_type, severity, function_name, line_number, vulnerability_description
+    - Labels: Yes - Multi-class classification by vulnerability type (reentrancy, overflow, etc.)
 - **Solution Brainstorm**:
   - Descriptive analytics: Exchange risk distribution, compliance status analysis, security incident trends
   - Diagnostic analytics: Risk factor contribution analysis, exchange failure investigation
@@ -206,10 +244,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **IBM AML Dataset** (Kaggle, Score: 92/100) - Synthetic data suitable for privacy-preserving techniques
     - URL: https://www.kaggle.com/datasets/ealtman2019/ibm-transactions-for-anti-money-laundering-aml
+    - Features: Transaction amounts, sender/receiver IDs, timestamps, transaction types, risk scores, money laundering indicators
+    - Labels: Yes - Multi-class with SAR flags, money laundering typologies, and risk classifications
   - **SAML-D Dataset** (Kaggle, Score: 82/100) - Anonymized transaction patterns across multiple institutions
     - URL: https://www.kaggle.com/datasets/berkanoztas/synthetic-transaction-monitoring-dataset-aml
+    - Features: Transaction amount, sender/receiver info, transaction type, high-risk geography flags, SAR flags, typology labels
+    - Labels: Yes - Multi-class with 28 different money laundering typology labels and SAR indicators
   - **Elliptic Data Set** (Kaggle, Score: 95/100) - Can be used for federated learning experiments with privacy constraints
     - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
 - **Solution Brainstorm**:
   - Descriptive analytics: Privacy-preserved statistics sharing, anonymized trend analysis
   - Diagnostic analytics: Collaborative threat investigation, privacy-preserved root cause analysis
@@ -228,10 +272,16 @@ The domain demands integration of traditional AML systems with blockchain analyt
 - **Recommended Datasets**:
   - **Elliptic Data Set** (Kaggle, Score: 95/100) - Bitcoin transaction graph ideal for forensic investigation workflows
     - URL: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
+    - Features: 166 features (94 local + 72 aggregated), timestep, class labels (illicit/licit), transaction IDs
+    - Labels: Yes - Binary classification (illicit/licit), ~2% illicit, ~21% licit, ~77% unknown
   - **BitcoinHeist Dataset** (UCI, Score: 85/100) - Ransomware case studies with temporal evidence chains
     - URL: https://archive.ics.uci.edu/ml/datasets/BitcoinHeistRansomwareAddressDataset
+    - Features: Address, year, day, length, weight, count, looped, neighbors, income, labels (ransomware families)
+    - Labels: Yes - Multi-class classification with ransomware family types (29 different families + white addresses)
   - **Cryptocurrency Scam Dataset** (Kaggle, Score: 72/100) - Verified fraud cases for forensic methodology development
     - URL: https://www.kaggle.com/datasets/zongaobian/cryptocurrency-scam-dataset
+    - Features: URL, scam type, category, subcategory, reporter, date, status verification, blockchain addresses
+    - Labels: Yes - Multi-class classification by scam type (phishing, fake exchange, Ponzi, etc.)
 - **Solution Brainstorm**:
   - Descriptive analytics: Transaction flow visualization, actor relationship mapping, evidence chain documentation
   - Diagnostic analytics: Investigation pathway analysis, evidence strength assessment
