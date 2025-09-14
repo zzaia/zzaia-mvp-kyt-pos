@@ -208,4 +208,28 @@ __marimo__/
 
 # DataSet
 *.csv
+*.h5
+*.hdf5
+*.parquet
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.tsv
+*.dill
+*.pkl
+*.pickle
+*.joblib
+*.npz
+*.npy
+*.feather
+*.arrow
+*.sas7bdat
+*.sav
+*.rdata
+*.rds
+*.mat
+*.matlab
+*.xls
+*.xlsx      
 
