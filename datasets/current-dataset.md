@@ -10,7 +10,7 @@
 ### **Elliptic Data Set**
 - **Source Platform**: Kaggle
 - **Direct URL**: https://www.kaggle.com/datasets/ellipticco/elliptic-data-set
-- **Dataset Size**: 200,000 transactions × 166 features, ~6GB
+- **Dataset Size**: 200,000 transactions ï¿½ 166 features, ~600MB
 - **Problem Relevance**: High - Bitcoin illicit transaction classification
 - **Data Quality**: Excellent - professionally curated by Elliptic Co.
 - **License Type**: Open (with attribution requirements)
