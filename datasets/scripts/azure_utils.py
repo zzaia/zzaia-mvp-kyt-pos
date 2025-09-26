@@ -35,7 +35,7 @@ class AzureBlobDownloader:
             raise Exception(f"Failed to initialize Azure Blob connection: {e}")
 
 
-    def download_documents(self, dataset_name, base_path="../"):
+    def download_documents(self, project_folder, document_folder, base_path="../"):
         """
         Download dataset from Azure Blob Storage.
 
@@ -47,13 +47,13 @@ class AzureBlobDownloader:
             bool: True if download successful, False otherwise
         """
         try:
-            original_dir = Path(base_path) / "original"
-            specific_dir = original_dir / dataset_name
+            original_dir = Path(base_path) / project_folder 
+            specific_dir = original_dir / document_folder
 
             original_dir.mkdir(exist_ok=True)
             specific_dir.mkdir(exist_ok=True)
 
-            remote_path = f"original/{dataset_name}/"
+            remote_path = f"{project_folder}/{document_folder}/"
             downloaded_files = 0
 
             for blob in self.container_client.list_blobs(name_starts_with=remote_path):
