@@ -40,7 +40,8 @@ class AzureBlobDownloader:
         Download dataset from Azure Blob Storage.
 
         Args:
-            dataset_name: Name of the dataset directory in blob storage
+            project_folder: Name of the project folder in blob storage
+            document_folder: Name of the document folder in blob storage
             base_path: Local base path for downloads (default: "../")
 
         Returns:

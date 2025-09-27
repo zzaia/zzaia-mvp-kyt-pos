@@ -16,10 +16,10 @@ This project addresses the challenge of **automated suspicious transaction detec
 - **Enable Real-time Processing**: Provide scalable solutions for high-volume transaction monitoring
 - **Enhance Regulatory Compliance**: Meet evolving AML/KYT regulatory requirements
 
-### **Business Impact**
-- **Cost Reduction**: Decrease manual review overhead by 60-80%
-- **Risk Mitigation**: Improve detection of sophisticated laundering schemes
-- **Regulatory Alignment**: Ensure compliance with FATF and local financial regulations
+### **Business Context**
+- **Cost Reduction**: Potential to decrease manual review overhead through automated detection
+- **Risk Mitigation**: Enhanced detection of sophisticated laundering schemes
+- **Regulatory Alignment**: Support compliance with FATF and local financial regulations
 - **Operational Efficiency**: Enable automated decision-making for transaction monitoring
 
 ## 📊 **Dataset & Methodology**
@@ -74,10 +74,13 @@ The project utilizes the **Elliptic Bitcoin Dataset**, a comprehensive collectio
 
 ## 📈 **Key Results & Achievements**
 
-- **Model Performance**: Achieved 85%+ accuracy in illicit transaction detection
-- **False Positive Reduction**: Decreased false positive rates by 40% compared to baseline
-- **Feature Analysis**: Identified key transaction patterns indicative of money laundering
-- **Scalability**: Demonstrated cloud-based processing capabilities for enterprise deployment
+- **Model Performance**: Achieved 88.49% composite score with SVM as the best-performing model
+- **Algorithm Comparison**: Comprehensive evaluation of 8 machine learning algorithms (SVM, KNN, Gradient Boosting, Bagging, Random Forest, Extra Trees, CART, AdaBoost)
+- **Feature Engineering**: Successfully reduced dimensionality from 166 to 59 features using PCA while preserving 95% variance
+- **Real-world Application**: Processed 157,205 unlabeled transactions, identifying 12,675 potentially illicit cases
+- **Model Ranking**: SVM (88.49%) > KNN (86.87%) > Gradient Boosting (85.02%) demonstrated superior performance
+- **Scalability**: Demonstrated cloud-based processing capabilities with Azure Blob Storage integration
+- **Academic Contribution**: Validated machine learning approaches for cryptocurrency transaction risk assessment
 
 ## 🚀 **Getting Started**
 
