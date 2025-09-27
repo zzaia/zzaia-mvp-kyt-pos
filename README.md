@@ -120,5 +120,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🤝 **Contributing**
 This is an academic project. For questions or collaboration inquiries, please open an issue or contact the project maintainers.
 
----
-*Developed as part of the PUC-Rio postgraduate program requirements, demonstrating practical application of advanced analytics in financial crime prevention.*
+##
+> *"I can do all this through him who gives me strength."*
+>
+> **— Philippians 4:13**
