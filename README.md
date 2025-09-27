@@ -86,7 +86,7 @@ The project utilizes the **Elliptic Bitcoin Dataset**, a comprehensive collectio
 
 ### **Prerequisites**
 ```bash
-pip install pandas numpy scikit-learn matplotlib seaborn plotly
+pip install pandas numpy scikit-learn matplotlib seaborn plotly kaggle
 pip install optuna azure-storage-blob jupyter
 ```
 
