@@ -62,7 +62,6 @@ The project utilizes the **Elliptic Bitcoin Dataset**, a comprehensive collectio
   - Cloud-based data storage and retrieval
   - Scalable data processing pipeline
   - Class-based Azure Blob Storage management
-  
 
 ## 🛠 **Technologies & Tools**
 
