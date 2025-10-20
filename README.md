@@ -82,6 +82,15 @@ The project utilizes the **Elliptic Bitcoin Dataset**, a comprehensive collectio
 - **Scalability**: Demonstrated cloud-based processing capabilities with Azure Blob Storage integration
 - **Academic Contribution**: Validated machine learning approaches for cryptocurrency transaction risk assessment
 
+## 🤖 AI-Assisted Development
+
+This project showcases the integration of AI-powered development workflows using a **customized agentic system** built on Claude Code.
+
+### Custom AI Workspace
+- **Repository**: [zzaia-agentic-workspace](https://github.com/zzaia/zzaia-agentic-workspace)
+- **Toolset**: Claude Code with custom agents, slash commands, and templates 
+- **Workflow**: Multi-repository management, git worktrees, automated task orchestration
+
 ## 🚀 **Getting Started**
 
 ### **Prerequisites**
