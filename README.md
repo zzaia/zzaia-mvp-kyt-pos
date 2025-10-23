@@ -44,18 +44,14 @@ The project utilizes the **Elliptic Bitcoin Dataset**, a comprehensive collectio
 #### 2. **Main Model Development**
 - **File**: [`mvp-kyt-sup-main.ipynb`](./mvp-kyt-sup-main.ipynb)
 - **Purpose**:
+  - Advanced hyperparameter tuning using Optuna
+  - Bayesian optimization for model performance enhancement
   - Implementation of multiple machine learning algorithms
   - Comparative analysis of model performance
   - Feature importance analysis and selection
   - Business metrics evaluation and interpretation
-
-#### 3. **Hyperparameter Optimization**
-- **File**: [`mvp-kyt-sup-optuna-main.ipynb`](./mvp-kyt-sup-optuna-main.ipynb)
-- **Purpose**:
-  - Advanced hyperparameter tuning using Optuna
-  - Bayesian optimization for model performance enhancement
-  - Distribution analysis for parameter selection strategies
   - Cross-validation and model generalization assessment
+  - Distribution analysis for parameter selection strategies
 
 ### **Supporting Infrastructure**
 - **Azure Integration**: [`datasets/scripts/azure_utils.py`](./datasets/scripts/azure_utils.py)
