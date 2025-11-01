@@ -232,4 +232,5 @@ __marimo__/
 *.matlab
 *.xls
 *.xlsx      
+*.metadata.json      
 
