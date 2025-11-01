@@ -17,12 +17,16 @@ class FNNWrapper(PipelineWrapper):
         super().__init__(name='FNN', random_seed=random_seed)
         tf.random.set_seed(random_seed)
 
-    def create_feedforward_nn(self, meta, hidden_dims, learning_rate, dropout):
+    @staticmethod
+    def create_feedforward_nn(meta, hidden_dims=[128, 64], learning_rate=0.001, dropout=0.3):
         """
         Create feedforward neural network.
 
+        This is a static method to ensure proper pickling and parameter passing
+        with KerasClassifier and scikit-learn.
+
         Args:
-            meta: Metadata from KerasClassifier
+            meta: Metadata from KerasClassifier containing n_features_in_ and n_classes_
             hidden_dims: List of hidden layer sizes
             learning_rate: Learning rate for optimizer
             dropout: Dropout rate for regularization
@@ -64,7 +68,7 @@ class FNNWrapper(PipelineWrapper):
             ('std', StandardScaler()),
             ('pca', PCA(n_components=n_pca_components)),
             ('fnn', KerasClassifier(
-                model=self.create_feedforward_nn,
+                model=FNNWrapper.create_feedforward_nn,
                 hidden_dims=[128, 64],
                 learning_rate=0.001,
                 dropout=0.3,
