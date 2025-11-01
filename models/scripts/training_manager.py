@@ -1,0 +1,422 @@
+"""
+Training Manager Module
+
+Encapsulates all training logic for machine learning models with Optuna optimization,
+checkpoint management, and Azure fallback support.
+
+Usage:
+    from training_manager import TrainingManager
+
+    manager = TrainingManager(
+        checkpoint_dir="./models/checkpoints",
+        n_trials=10,
+        patience_ratio=0.2,
+        timeout_seconds=7200,
+        n_jobs=1,
+        random_seed=42
+    )
+
+    models, cv_results, studies = manager.train_models(
+        pipeline_wrappers=wrappers,
+        param_distributions=params,
+        X_train=X_train,
+        y_train=y_train,
+        cv=cv,
+        scorer=scorer,
+        aml_scorer=aml_scorer,
+        n_pca_components=0.95
+    )
+"""
+
+import json
+import time
+import warnings
+from datetime import datetime
+from pathlib import Path
+from typing import Dict, List, Tuple, Optional, Any
+
+import joblib
+import numpy as np
+import optuna
+from optuna.samplers import TPESampler
+from optuna.pruners import MedianPruner
+from sklearn.model_selection import cross_val_score
+
+
+class EarlyStoppingCallback:
+    """
+    Stop optimization after N trials without improvement or timeout.
+
+    Attributes:
+        patience: Number of trials without improvement before stopping
+        timeout_seconds: Maximum time in seconds before stopping
+        trials_without_improvement: Counter for trials without improvement
+        best_value: Best score achieved so far
+        start_time: Timestamp when optimization started
+        is_timed_out: Flag indicating if optimization was stopped by timeout
+    """
+
+    def __init__(self, patience: int, timeout_seconds: Optional[float] = None):
+        """
+        Initialize early stopping callback.
+
+        Args:
+            patience: Number of trials without improvement before stopping
+            timeout_seconds: Maximum time in seconds (None for no timeout)
+        """
+        self.patience = patience
+        self.timeout_seconds = timeout_seconds
+        self.trials_without_improvement = 0
+        self.best_value = None
+        self.start_time = None
+        self.is_timed_out = False
+
+    def start_timer(self):
+        """Start the timeout timer."""
+        self.start_time = time.time()
+
+    def __call__(self, study: optuna.study.Study, trial: optuna.trial.FrozenTrial) -> None:
+        """
+        Check stopping conditions after each trial.
+
+        Args:
+            study: Optuna study object
+            trial: Completed trial
+        """
+        # Check timeout
+        if self.timeout_seconds and self.start_time:
+            elapsed_time = time.time() - self.start_time
+            if elapsed_time >= self.timeout_seconds:
+                self.is_timed_out = True
+                study.stop()
+                return
+
+        # Only process completed trials
+        if trial.state != optuna.trial.TrialState.COMPLETE:
+            return
+
+        # Initialize best value on first trial
+        if self.best_value is None:
+            self.best_value = study.best_value
+            self.trials_without_improvement = 0
+            return
+
+        # Check for improvement
+        if study.best_value > self.best_value:
+            self.best_value = study.best_value
+            self.trials_without_improvement = 0
+        else:
+            self.trials_without_improvement += 1
+
+        # Stop if patience exceeded
+        if self.trials_without_improvement >= self.patience:
+            study.stop()
+
+
+class TrainingManager:
+    """
+    Manages model training with Optuna optimization and checkpoint persistence.
+
+    Handles:
+    - Hyperparameter optimization using Optuna
+    - Checkpoint management (load/save models, studies, metadata)
+    - Early stopping with patience and timeout
+    - Azure blob storage fallback for model loading
+    - Cross-validation and scoring
+    """
+
+    def __init__(
+        self,
+        checkpoint_dir: Path,
+        n_trials: int,
+        patience_ratio: float,
+        timeout_seconds: float,
+        n_jobs: int,
+        random_seed: int
+    ):
+        """
+        Initialize training manager.
+
+        Args:
+            checkpoint_dir: Directory for saving/loading checkpoints
+            n_trials: Number of Optuna trials per model
+            patience_ratio: Ratio of trials for early stopping patience
+            timeout_seconds: Maximum time per model training
+            n_jobs: Number of parallel jobs for cross-validation
+            random_seed: Random seed for reproducibility
+        """
+        self.checkpoint_dir = Path(checkpoint_dir)
+        self.n_trials = n_trials
+        self.patience = int(patience_ratio * n_trials)
+        self.timeout_seconds = timeout_seconds
+        self.n_jobs = n_jobs
+        self.random_seed = random_seed
+
+        # Ensure checkpoint directory exists
+        self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+        # Suppress Optuna warnings
+        optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+    def load_checkpoint(self, model_name: str) -> Optional[Tuple[Any, optuna.study.Study, Dict]]:
+        """
+        Load model checkpoint if exists.
+
+        Args:
+            model_name: Name of the model to load
+
+        Returns:
+            Tuple of (pipeline, study, metadata) if checkpoint exists, None otherwise
+        """
+        model_path = self.checkpoint_dir / f"{model_name}.pkl"
+        study_path = self.checkpoint_dir / f"{model_name}.study.pkl"
+        metadata_path = self.checkpoint_dir / f"{model_name}.metadata.json"
+
+        # Check if all checkpoint files exist
+        if not (model_path.exists() and study_path.exists() and metadata_path.exists()):
+            return None
+
+        try:
+            # Load checkpoint files
+            with open(metadata_path, 'r') as f:
+                metadata = json.load(f)
+
+            trained_pipe = joblib.load(model_path)
+            study = joblib.load(study_path)
+
+            return trained_pipe, study, metadata
+
+        except Exception as e:
+            warnings.warn(f"Failed to load checkpoint for {model_name}: {e}")
+            return None
+
+    def save_checkpoint(
+        self,
+        model_name: str,
+        pipe: Any,
+        study: optuna.study.Study,
+        cv_scores: np.ndarray,
+        early_stopping: EarlyStoppingCallback
+    ) -> None:
+        """
+        Save model checkpoint with metadata.
+
+        Args:
+            model_name: Name of the model
+            pipe: Trained pipeline
+            study: Optuna study object
+            cv_scores: Cross-validation scores
+            early_stopping: Early stopping callback with training info
+        """
+        # Calculate statistics
+        actual_trials = len([t for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE])
+
+        # Create metadata
+        metadata = {
+            'model_name': model_name,
+            'model_class': pipe.named_steps[list(pipe.named_steps.keys())[-1]].__class__.__name__,
+            'cv_score_mean': float(study.best_value),
+            'cv_score_std': float(cv_scores.std()),
+            'cv_score_type': 'AML Composite Score',
+            'trained_at': datetime.now().isoformat(),
+            'actual_trials': actual_trials,
+            'n_trials': self.n_trials,
+            'patience': self.patience,
+            'timeout_seconds': self.timeout_seconds,
+            'is_timed_out': early_stopping.is_timed_out,
+            'best_params': study.best_params,
+            'random_seed': self.random_seed,
+        }
+
+        # Save files
+        model_path = self.checkpoint_dir / f"{model_name}.pkl"
+        study_path = self.checkpoint_dir / f"{model_name}.study.pkl"
+        metadata_path = self.checkpoint_dir / f"{model_name}.metadata.json"
+
+        with open(metadata_path, 'w') as f:
+            json.dump(metadata, f, indent=2)
+
+        joblib.dump(pipe, model_path, compress=3)
+        joblib.dump(study, study_path, compress=3)
+
+    def train_models(
+        self,
+        pipeline_wrappers: List[Any],
+        param_distributions: Dict[str, Dict],
+        X_train: Any,
+        y_train: Any,
+        cv: Any,
+        scorer: Any,
+        aml_scorer: Any,
+        n_pca_components: float,
+        azure_client: Optional[Any] = None
+    ) -> Tuple[List[Tuple[str, Any]], List[np.ndarray], Dict[str, optuna.study.Study]]:
+        """
+        Train all models with Optuna optimization and checkpoint management.
+
+        Args:
+            pipeline_wrappers: List of pipeline wrapper instances
+            param_distributions: Dictionary of parameter distributions per model
+            X_train: Training features
+            y_train: Training labels
+            cv: Cross-validation splitter
+            scorer: Sklearn scorer object
+            aml_scorer: AML scorer instance for creating objectives
+            n_pca_components: Number of PCA components to keep
+            azure_client: Optional Azure client for downloading checkpoints
+
+        Returns:
+            Tuple of:
+                - training_models: List of (name, pipeline) tuples
+                - cv_results_all: List of cross-validation scores
+                - study_results: Dictionary of Optuna studies by model name
+        """
+        training_models = []
+        cv_results_all = []
+        study_results = {}
+
+        print(f"🔍 Training {len(pipeline_wrappers)} models (patience={self.patience}, timeout={self.timeout_seconds/3600:.1f}h)")
+        print(f"Checkpoints: {self.checkpoint_dir}")
+        print("-" * 60)
+
+        for wrapper in pipeline_wrappers:
+            name = wrapper.name
+
+            # Try to load from checkpoint
+            checkpoint = self.load_checkpoint(name)
+
+            if checkpoint is not None:
+                trained_pipe, study, metadata = checkpoint
+
+                # Extract metrics from metadata
+                meta_score_mean = metadata['cv_score_mean']
+                meta_score_std = metadata['cv_score_std']
+                meta_actual_trials = metadata['actual_trials']
+                meta_ntrials = metadata['n_trials']
+                meta_is_timed_out = metadata['is_timed_out']
+
+                # Store results
+                cv_scores = np.array([meta_score_mean, meta_score_std])
+                cv_results_all.append(cv_scores)
+                training_models.append((name, trained_pipe))
+                study_results[name] = study
+
+                print(f"Loading checkpoint {name}... ✅ {meta_score_mean:.4f} (±{meta_score_std:.4f}) [{meta_actual_trials}/{meta_ntrials}] is timed out: {meta_is_timed_out}]")
+                continue
+
+            # No checkpoint found - train from scratch
+            print(f"Training {name}...", end=" ", flush=True)
+
+            # Build pipeline
+            pipe = wrapper.build_pipeline(n_pca_components)
+
+            # Create Optuna study
+            study = optuna.create_study(
+                direction='maximize',
+                sampler=TPESampler(seed=self.random_seed),
+                pruner=MedianPruner(n_startup_trials=5, n_warmup_steps=1, interval_steps=1)
+            )
+
+            # Create objective function
+            objective = aml_scorer.create_objective(
+                name, pipe, param_distributions, X_train, y_train, cv, scorer
+            )
+
+            # Setup early stopping
+            early_stopping = EarlyStoppingCallback(
+                patience=self.patience,
+                timeout_seconds=self.timeout_seconds
+            )
+            early_stopping.start_timer()
+
+            # Run optimization
+            study.optimize(objective, n_trials=self.n_trials, callbacks=[early_stopping])
+
+            # Train final model with best parameters
+            pipe.set_params(**study.best_params)
+            cv_scores = cross_val_score(
+                pipe, X_train, y_train, cv=cv, scoring=scorer, n_jobs=self.n_jobs
+            )
+            pipe.fit(X_train, y_train)
+
+            # Calculate statistics
+            actual_trials = len([t for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE])
+
+            print(f"✅ {study.best_value:.4f} (±{cv_scores.std():.4f}) [{actual_trials}/{self.n_trials}] is timed out: {early_stopping.is_timed_out}]")
+
+            # Save checkpoint
+            self.save_checkpoint(name, pipe, study, cv_scores, early_stopping)
+
+            # Store results
+            cv_results_all.append(cv_scores)
+            training_models.append((name, pipe))
+            study_results[name] = study
+
+        print("-" * 60)
+        print(f"✅ {len(training_models)} models ready")
+
+        return training_models, cv_results_all, study_results
+
+    def load_models_from_checkpoint(
+        self,
+        azure_client: Optional[Any] = None
+    ) -> Tuple[List[Tuple[str, Any]], Dict[str, optuna.study.Study]]:
+        """
+        Load all trained models from checkpoints.
+
+        If checkpoints don't exist locally and azure_client is provided,
+        attempts to download from Azure blob storage.
+
+        Args:
+            azure_client: Optional Azure client for downloading checkpoints
+
+        Returns:
+            Tuple of:
+                - training_models: List of (name, pipeline) tuples
+                - study_results: Dictionary of Optuna studies by model name
+        """
+        training_models = []
+        study_results = {}
+
+        # Check if local checkpoints exist
+        if not self.checkpoint_dir.exists() or not any(self.checkpoint_dir.iterdir()):
+            if azure_client:
+                print("📥 Downloading from Azure...")
+                # Extract model name from checkpoint dir path
+                model_name = self.checkpoint_dir.name
+                parent_dir = self.checkpoint_dir.parent
+
+                success = azure_client.download_documents(
+                    "models",
+                    model_name,
+                    base_path=str(parent_dir.parent)
+                )
+
+                if not success:
+                    print("❌ No models available")
+                    return training_models, study_results
+            else:
+                print("❌ No local checkpoints and no Azure client provided")
+                return training_models, study_results
+
+        # Load all model checkpoints
+        for model_file in sorted(self.checkpoint_dir.glob('*.pkl')):
+            # Skip study files (they'll be loaded with their corresponding models)
+            if '.study' in model_file.name:
+                continue
+
+            name = model_file.stem
+            pipe = joblib.load(model_file)
+
+            # Load corresponding study if exists
+            study_path = model_file.with_suffix('.study.pkl')
+            study = joblib.load(study_path) if study_path.exists() else None
+
+            training_models.append((name, pipe))
+            if study:
+                study_results[name] = study
+
+        source = "Azure" if azure_client and not self.checkpoint_dir.exists() else "checkpoints"
+        print(f"✅ Loaded {len(training_models)} models + studies from {source}")
+
+        return training_models, study_results
