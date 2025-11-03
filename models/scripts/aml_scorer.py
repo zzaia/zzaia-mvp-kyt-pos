@@ -13,6 +13,7 @@ Usage:
     composite_scorer = make_scorer(scorer.score)
 """
 
+import numpy as np
 from sklearn.metrics import confusion_matrix, matthews_corrcoef
 from sklearn.model_selection import cross_val_score
 
@@ -77,6 +78,37 @@ class AMLScorer:
         # Weighted combination
         return self.mcc_weight * mcc + self.cost_weight * cost_score
 
+    def cross_val_score_with_threshold(self, pipeline, X, y, cv, threshold):
+        """
+        Custom cross-validation with threshold-aware predictions.
+
+        Args:
+            pipeline: Sklearn pipeline to evaluate
+            X: Training features
+            y: Training labels
+            cv: Cross-validation splitter
+            threshold: Classification threshold for probability conversion
+
+        Returns:
+            Array of fold scores
+        """
+        scores = []
+        for train_idx, val_idx in cv.split(X, y):
+            # Split data
+            X_train_fold, X_val_fold = X.iloc[train_idx], X.iloc[val_idx]
+            y_train_fold, y_val_fold = y.iloc[train_idx], y.iloc[val_idx]
+
+            # Train and predict
+            pipeline.fit(X_train_fold, y_train_fold)
+            y_proba = pipeline.predict_proba(X_val_fold)[:, 1]
+            y_pred = (y_proba >= threshold).astype(int)
+
+            # Calculate score
+            fold_score = self.score(y_val_fold, y_pred)
+            scores.append(fold_score)
+
+        return np.array(scores)
+
     def create_objective(self, model_name, pipeline, param_dist, X_train, y_train, cv, scorer):
         """
         Create Optuna objective function for hyperparameter optimization.
@@ -99,11 +131,22 @@ class AMLScorer:
             for param_name, suggest_fn in param_dist[model_name].items():
                 params[param_name] = suggest_fn(trial)
 
-            # Set pipeline parameters
+            # Add threshold parameter (check if defined in param_dist, else use default)
+            threshold_key = 'threshold'
+            if threshold_key in param_dist[model_name]:
+                threshold = param_dist[model_name][threshold_key](trial)
+            else:
+                threshold = trial.suggest_float('threshold', 0.1, 0.9)
+
+            # Set pipeline parameters (exclude threshold as it's not a pipeline param)
             pipeline.set_params(**params)
 
-            # Perform cross-validation
-            scores = cross_val_score(pipeline, X_train, y_train, cv=cv, scoring=scorer, n_jobs=1)
+            # Perform custom cross-validation with threshold
+            scores = self.cross_val_score_with_threshold(pipeline, X_train, y_train, cv, threshold)
+
+            # Store fold scores in trial user attributes for later retrieval
+            trial.set_user_attr('cv_scores', scores.tolist())
+            trial.set_user_attr('threshold', threshold)
 
             # Return mean score
             return scores.mean()
