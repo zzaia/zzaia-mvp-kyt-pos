@@ -70,13 +70,6 @@ class StackingAdvWrapper(PipelineWrapper):
             ('pca', PCA(n_components=n_pca_components)),
             ('stacking', StackingClassifier(
                 estimators=[
-                    ('fnn', KerasClassifier(
-                        model=self.create_fnn,
-                        epochs=50,
-                        batch_size=128,
-                        verbose=0,
-                        random_state=self.random_seed
-                    )),
                     ('xgb', xgb.XGBClassifier(
                         random_state=self.random_seed,
                         eval_metric='logloss',
@@ -100,20 +93,6 @@ class StackingAdvWrapper(PipelineWrapper):
             'pca__n_components': lambda trial: trial.suggest_float('pca__n_components', 0.90, 0.99),
             'pca__whiten': lambda trial: trial.suggest_categorical('pca__whiten', [True, False]),
             'pca__svd_solver': lambda trial: trial.suggest_categorical('pca__svd_solver', ['auto', 'full']),
-
-            # FNN parameters
-            'stacking__fnn__model__hidden_dims': lambda trial: trial.suggest_categorical(
-                'stacking__fnn__model__hidden_dims', [[64, 32], [128, 64], [64]]
-            ),
-            'stacking__fnn__model__learning_rate': lambda trial: trial.suggest_float(
-                'stacking__fnn__model__learning_rate', 1e-4, 1e-2, log=True
-            ),
-            'stacking__fnn__model__dropout': lambda trial: trial.suggest_float(
-                'stacking__fnn__model__dropout', 0.2, 0.5
-            ),
-            'stacking__fnn__epochs': lambda trial: trial.suggest_categorical(
-                'stacking__fnn__epochs', [30, 50, 100]
-            ),
 
             # XGBoost parameters
             'stacking__xgb__n_estimators': lambda trial: trial.suggest_int('stacking__xgb__n_estimators', 100, 500),
