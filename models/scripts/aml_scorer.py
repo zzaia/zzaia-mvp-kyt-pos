@@ -174,7 +174,8 @@ class AMLScorer:
                 threshold = trial.suggest_float('threshold', 0.1, 0.9)
 
             # Set pipeline parameters (exclude threshold as it's not a pipeline param)
-            pipeline.set_params(**params)
+            pipeline_params = {k: v for k, v in params.items() if k != 'threshold'}
+            pipeline.set_params(**pipeline_params)
 
             # Perform custom cross-validation with threshold
             scores = self.cross_val_score_with_threshold(pipeline, X_train, y_train, cv, threshold)
