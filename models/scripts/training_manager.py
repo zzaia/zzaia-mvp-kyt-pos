@@ -204,7 +204,8 @@ class TrainingManager:
         model_name: str,
         pipe: Any,
         study: optuna.study.Study,
-        early_stopping: EarlyStoppingCallback
+        early_stopping: EarlyStoppingCallback,
+        aml_scorer: Any
     ) -> None:
         """
         Save model checkpoint with metadata.
@@ -214,9 +215,10 @@ class TrainingManager:
             pipe: Trained pipeline
             study: Optuna study object
             early_stopping: Early stopping callback with training info
+            aml_scorer: AML scorer instance for metric equation
         """
         # Calculate statistics
-        threshold = study.study.best_trial.user_attrs['threshold']
+        threshold = study.best_params.get('threshold', 0.5)
         cv_scores = np.array(study.best_trial.user_attrs['cv_scores'])
         actual_trials = len([t for t in study.trials if t.state == optuna.trial.TrialState.COMPLETE])
         print(f"✅ {study.best_value:.4f} (±{cv_scores.std():.4f}) [{actual_trials}/{self.n_trials}] is timed out: {early_stopping.is_timed_out}]")
@@ -228,7 +230,7 @@ class TrainingManager:
             'cv_score_mean': float(cv_scores.mean()),
             'cv_score_std': float(cv_scores.std()),
             'cv_scores': cv_scores.tolist(),
-            'cv_score_type': 'AML Composite Score',
+            'cv_score_type': aml_scorer.metric_equation,
             'trained_at': datetime.now().isoformat(),
             'actual_trials': actual_trials,
             'n_trials': self.n_trials,
@@ -328,10 +330,12 @@ class TrainingManager:
             study.optimize(objective, n_trials=self.n_trials, callbacks=[early_stopping])
 
             # Train final model with best parameters
-            pipe.set_params(**study.best_params)
+            pipeline_params = {k: v for k, v in
+            study.best_params.items() if k != 'threshold'}
+            pipe.set_params(**pipeline_params)
             pipe.fit(X_train, y_train)
 
-            checkpoint = self.save_checkpoint(name, pipe, study, early_stopping)
+            checkpoint = self.save_checkpoint(name, pipe, study, early_stopping, aml_scorer)
             training_models.append(checkpoint)
 
         print("-" * 60)
