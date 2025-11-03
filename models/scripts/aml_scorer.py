@@ -14,6 +14,7 @@ Usage:
 """
 
 import numpy as np
+from sklearn.base import clone
 from sklearn.metrics import confusion_matrix, matthews_corrcoef, average_precision_score
 
 
@@ -173,12 +174,15 @@ class AMLScorer:
             else:
                 threshold = trial.suggest_float('threshold', 0.1, 0.9)
 
+            # Clone pipeline to avoid fitted state issues (especially CatBoost)
+            pipeline_clone = clone(pipeline)
+
             # Set pipeline parameters (exclude threshold as it's not a pipeline param)
             pipeline_params = {k: v for k, v in params.items() if k != 'threshold'}
-            pipeline.set_params(**pipeline_params)
+            pipeline_clone.set_params(**pipeline_params)
 
             # Perform custom cross-validation with threshold
-            scores = self.cross_val_score_with_threshold(pipeline, X_train, y_train, cv, threshold)
+            scores = self.cross_val_score_with_threshold(pipeline_clone, X_train, y_train, cv, threshold)
 
             # Store fold scores in trial user attributes for later retrieval
             trial.set_user_attr('cv_scores', scores.tolist())
