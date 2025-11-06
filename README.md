@@ -89,7 +89,22 @@ This project showcases the integration of AI-powered development workflows using
 
 ## 🚀 **Getting Started**
 
-### **Prerequisites**
+### **Quick Start with Google Colab**
+
+Run the main notebook directly in your browser without any local setup:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/zzaia/zzaia-mvp-kyt-pos/blob/main/mvp-kyt-sup-main.ipynb)
+
+**Benefits of using Colab:**
+- ✅ No local installation required
+- ✅ Free GPU/TPU access for faster training
+- ✅ Pre-configured Python environment
+- ✅ Direct integration with GitHub
+- ✅ Easy sharing and collaboration
+
+**Note**: The notebook will automatically clone the repository and install required dependencies when run in Colab.
+
+### **Prerequisites (Local Setup)**
 ```bash
 pip install pandas numpy scikit-learn matplotlib seaborn plotly kaggle
 pip install optuna azure-storage-blob jupyter
