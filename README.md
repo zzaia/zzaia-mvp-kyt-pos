@@ -70,11 +70,11 @@ The project utilizes the **Elliptic Bitcoin Dataset**, a comprehensive collectio
 
 ## 📈 **Key Results & Achievements**
 
-- **Model Performance**: Achieved 88.49% composite score with SVM as the best-performing model
-- **Algorithm Comparison**: Comprehensive evaluation of 8 machine learning algorithms (SVM, KNN, Gradient Boosting, Bagging, Random Forest, Extra Trees, CART, AdaBoost)
-- **Feature Engineering**: Successfully reduced dimensionality from 166 to 59 features using PCA while preserving 95% variance
-- **Real-world Application**: Processed 157,205 unlabeled transactions, identifying 12,675 potentially illicit cases
-- **Model Ranking**: SVM (88.49%) > KNN (86.87%) > Gradient Boosting (85.02%) demonstrated superior performance
+- **Model Performance**: Achieved 99.90% PR-AUC score with TabNet as the best-performing model
+- **Algorithm Comparison**: Comprehensive evaluation of 20 machine learning algorithms 
+- **Feature Engineering**: Successfully reduced dimensionality from 166 to 59 features using PCA
+- **Real-world Application**: Processed 157,205 unlabeled transactions, identifying 10,277 potentially illicit cases
+- **Model Ranking**: TabNet (97.50%) > FNN (96.44%) > Vote-Soft (96.28%) deep learning excels in financial pattern recognition followed by traditional SVC and FNN combined
 - **Scalability**: Demonstrated cloud-based processing capabilities with Azure Blob Storage integration
 - **Academic Contribution**: Validated machine learning approaches for cryptocurrency transaction risk assessment
 
